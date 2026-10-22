@@ -1,0 +1,5 @@
+itemId|itemName|category|quantity|minimumStockLevel|donatedOn|itemType|metadata
+ITM-1001|Fresh milk|Dairy|12|15|2026-08-09|Perishable|2026-08-12
+ITM-1002|Mixed vegetables|Produce|24|10|2026-08-10|Perishable|2026-08-15
+ITM-1003|Rice|Staples|40|20|2026-08-06|NonPerishable|24
+ITM-1004|Canned beans|Protein|8|12|2026-08-08|NonPerishable|36

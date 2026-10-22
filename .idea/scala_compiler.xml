@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ScalaCompilerConfiguration">
+    <option name="separateProdTestSources" value="true" />
+    <profile name="sbt 1" modules="FoodPantrySystem,Project_23051105,Project_23051105.main,Project_23051105.test" />
+    <profile name="sbt 2" modules="FoodPantrySystem.main,FoodPantrySystem.main~1,FoodPantrySystem.test,FoodPantrySystem.test~1">
+      <option name="featureWarnings" value="true" />
+      <parameters>
+        <parameter value="-Wunused:all" />
+        <parameter value="-Wconf:cat=deprecation:s" />
+      </parameters>
+    </profile>
+  </component>
+</project>

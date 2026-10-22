@@ -1,0 +1,4 @@
+AllocationId,FamilyId,HouseholdName,ItemId,ItemName,Quantity,PriorityScore,Date
+ALLOC-1,FAM-2001,"Rahman household",ITM-1001,"Fresh milk",10,90,2026-07-31
+ALLOC-2,FAM-2002,"Tan household",ITM-1004,"Canned beans",6,70,2026-07-31
+ALLOC-3,FAM-2003,"Kaur household",ITM-1002,"Mixed vegetables",4,50,2026-07-31
