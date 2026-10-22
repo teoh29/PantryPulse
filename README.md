@@ -7,6 +7,8 @@
 **Theme:** UN SDG Goal 1 — No Poverty  
 **Sub-domain:** Food Pantry Inventory & Demand Allocation  
 
+**Scala 3 · ScalaFX · JavaFX · CSV Storage · PDF Reports · ScalaTest**
+
 ---
 
 ## 1. Project Overview
@@ -21,13 +23,72 @@
 
 ---
 
+## From Donation to Distribution
+
+<p align="center">
+  <strong>A closer look at PantryPulse</strong><br>
+  Food inventory, household priorities, and distribution planning in one desktop application.
+</p>
+
+<p align="center">
+  <a href="https://drive.google.com/file/d/1cH00CDXoUzrNgYARG66lpKlEZsdyohJB/view?usp=drive_link"><strong>▶ WATCH THE DEMO</strong></a><br>
+  <sub>Opens in Google Drive</sub>
+</p>
+
+| 01 · Record | 02 · Prioritize | 03 · Distribute |
+| :--- | :--- | :--- |
+| Log donated food and review stock levels. | Register households and assign priority levels. | Prepare allocations, export a PDF, and fulfill the plan. |
+
+<details>
+<summary><strong>Explore the application workflow</strong></summary>
+
+1. Review dashboard metrics and low-stock alerts.
+2. Add donated items and their stock details.
+3. Register recipient households and set their priority.
+4. Generate and review suggested allocations.
+5. Export the PDF before fulfilling the plan and deducting stock.
+
+</details>
+
+*Academic prototype · Rule-based allocation*
+
+---
+
+## How Allocation Works
+
+The current planner uses a simple, deterministic matching approach:
+
+1. Keep inventory items with a quantity greater than zero.
+2. Sort items by their calculated priority score, highest first.
+3. Sort households by their assigned priority level, highest first.
+4. Pair the two sorted lists in order.
+5. Allocate the smaller of the item's available quantity and twice the household size, with a minimum of one unit.
+
+Each matched household receives one item type per generated plan. The number of allocations is limited by the shorter list of households or available item records.
+
+Perishable-item scores consider expiry dates and low-stock status. Non-perishable-item scores consider low-stock status. Monthly income and dietary requirements are recorded but are not used by the matching algorithm.
+
+---
+
 ## 2. Requirements & Development Environment
 
-* **Java Development Kit (JDK)**: Java 21 (LTS)
-* **Build Tool**: sbt 1.9+ (or sbt 1.12+)
-* **Scala Version**: Scala 3.3.6
-* **GUI Framework**: ScalaFX 21.0.0-R32 (JavaFX 21 binaries)
-* **Testing Library**: ScalaTest 3.2.18
+| Component | Version / purpose |
+| --- | --- |
+| Scala | 3.3.6 |
+| ScalaFX | 21.0.0-R32 |
+| JavaFX | 21 |
+| JDK | Java 21 recommended by the project |
+| sbt | 1.12.14, pinned in `project/build.properties` |
+| ScalaTest | 3.2.18 |
+| OpenPDF | 1.3.38, for distribution reports |
+| CSV files | Local inventory and household persistence |
+
+### Requirements
+
+- JDK 21 installed and available in your terminal.
+- sbt installed.
+- Internet access for the first dependency download.
+- A desktop environment capable of displaying JavaFX windows.
 
 ---
 
@@ -47,6 +108,7 @@ sbt run
 ```bash
 sbt test
 ```
+Run commands from the project root so the application uses the expected `data/` folder. Compilation, tests, and platform compatibility should be verified in your own environment; this README does not certify a successful run.
 
 ---
 
@@ -58,7 +120,23 @@ sbt test
 * **Defensive Exception Handling**: All file IO and string parsing operations in `FileDataStore` and `InputValidator` are safely wrapped in `scala.util.Try` or `Either[String, T]`.
 * **Reactive ScalaFX UI**: Modern card layout utilizing reactive `ObjectProperty`, `StringProperty`, and `ObservableBuffer` controls.
 
+The application separates its responsibilities into layers:
+
+| Layer | Responsibility |
+| --- | --- |
+| `model` | Inventory items, recipient families, allocations, and distribution plans |
+| `repository` | Generic repository contracts and CSV persistence |
+| `service` | Allocation rules, pantry operations, validation, and PDF generation |
+| `traits` | Shared identity and expiry interfaces |
+| `ui` | Dashboard, inventory, family, distribution, and about views |
+
+Object-oriented concepts include an abstract `InventoryItem` model, perishable and non-perishable subclasses, overridden priority calculations, and a generic `Repository[T]` interface. Immutable domain snapshots and `Either`/`Try` error handling support the service and persistence layers.
+
 ---
+
+### Class Diagram
+
+![PantryPulse UML class diagram](docs/UML.png)
 
 ## 5. Project Directory Structure
 
@@ -83,8 +161,7 @@ Project_23051105/
 │   ├── ai_reflection.md               # AI reflection essay (300-500 words)
 │   ├── citations.md                   # Citations & licenses
 │   ├── dev_log.md                     # >= 5 dated entries
-│   ├── reflection.md                  # Personal reflection (350-700 words)
-│   └── demo.mp4                       # <= 5 min video walkthrough
+│   └── reflection.md                  # Personal reflection (350-700 words)
 │
 ├── project/
 │   └── build.properties               # sbt version
@@ -136,6 +213,7 @@ Project_23051105/
 * **Packaged Seed Data (`src/main/resources/data/`)**: Seed copies of `inventory.csv` and `families.csv` are maintained under `src/main/resources/data/`. The `FileDataStore` automatically falls back to loading these seed resources if the root `./data/` directory is not yet initialized.
 
 ---
+
 
 ## 7. AI Usage Summary
 
